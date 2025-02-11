@@ -6,112 +6,130 @@
     <title>AIB Adalet Oyunu</title>
     <link rel="icon" type="image/png" href="https://static.wikia.nocookie.net/villains/images/9/92/Joker_card_%28AIB_TV_series%29.jpg/revision/latest/scale-to-width-down/250?cb=20230129034344">
     <style>
-        body {
-            height: 100%;
-            width: 100%;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-image: url('https://wallpaperbat.com/img/9704121-alice-in-borderland-background.jpg');
-            background-size: cover; /* Görselin ekranı tamamen kaplamasını sağlar */
-            background-position: center; /* Görseli ortalar */
-            background-repeat: no-repeat; /* Tekrarlamayı engeller */
-            height: 100vh; /* Ekran yüksekliği kadar alan kaplar */
-            margin: 0;
-            padding: 0;
-        }
-        .hidden {
+        #game, #gamecard {
             display: none;
         }
-
         html, body {
-    overflow: hidden;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+            overflow: hidden;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #start, #gamecard, #game {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
 
-h1, #player1, #player2, #result {
-    background-color: black;
-    color: white;
-    opacity: 70%;
-}
+        input {
+            width: 100px;
+            height: 100px;
+            font-size: 20px;
+            border-radius: 50%;
+            text-align: center;
+        }
+        button {
+            border-radius: 50%;
+            background-color: rgb(54, 53, 53);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 10px;
+        }
 
-input{
-    width: 100px;
-    height: 100px;
-    font-size: 20px;
-    border-radius: 50%;
-    text-align: center;
-}
-
-button{
-    border-radius: 50%;
-    background-color: rgb(54, 53, 53);
-  color: rgb(255, 255, 255);
-  border: 2px solid #ffffff;
-  padding: 10px 10px;
-}
+        img {
+        
+            height: 40%;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
+<div id="start" onclick="showGameCard()">
+    <h2>正義のゲーム</h2>
+    <h5>Adalet Oyunu</h5>
+</div>
+
+<div id="gamecard" onclick="showGame()">
+    <h2>難易度</h2>
+    <h5>Zorluk Derecesi</h5>
+    <img src="https://media.istockphoto.com/id/149126841/tr/foto%C4%9Fraf/playing-card-king-of-diamonds.jpg?s=612x612&w=0&k=20&c=0-3famU6KFm7syyv8RTggr6hsWlzZvfM82gBLGUdnf8=" alt="Karo Papazı">
+    <h2>ダイヤモンドの王様</h2>
+    <h5>Karo Papazı</h5>
+</div>
+
+<div id="game">
     <h1>1-100 Arası Bir Sayı Girin</h1>
-    
     <div id="player1">
         <p>1. Oyuncu, sayınızı girin:</p>
         <input type="number" id="yarismaci1" min="1" max="100"><br>
         <button onclick="kaydet1()">Kaydet</button>
     </div>
-    
-    <div id="player2" class="hidden">
+    <div id="player2" style="display:none;">
         <p>2. Oyuncu, sayınızı girin:</p>
         <input type="number" id="yarismaci2" min="1" max="100"><br>
         <button onclick="kaydet2()">Kaydet</button>
     </div>
-    
-    <div id="result" class="hidden">
+    <div id="result" style="display:none;">
         <h2>Sonuç:</h2>
         <p id="sonuc"></p>
+        <button onclick="restartGame()">Tekrar Oyna</button>
     </div>
+</div>
 
-    <script>
-        let sayi1, sayi2;
-
-        function kaydet1() {
-            sayi1 = parseInt(document.getElementById("yarismaci1").value);
-            document.getElementById("player1").classList.add("hidden");
-            document.getElementById("player2").classList.remove("hidden");
-            if (sayi1 < 1 || sayi1 > 100 || isNaN(sayi1)) {
-                alert("Lütfen 1-100 arası bir sayı girin.");
-                document.getElementById("player1").classList.remove("hidden");
-                document.getElementById("player2").classList.add("hidden");
-            }
-        }
-
-        function kaydet2() {
-            sayi2 = parseInt(document.getElementById("yarismaci2").value);
-            document.getElementById("player2").classList.add("hidden");
-            hesapla();
-        }
-
- function hesapla() {
-    let ort = (sayi1 + sayi2) * 0.8 * 0.5;
-    ort = Number(ort.toFixed(2));
-
-    let kazanan;
-    if (Math.abs(sayi1 - ort) < Math.abs(sayi2 - ort)) {
-        kazanan = `<strong>${ort}</strong> 1. oyuncu kazandı! 2. oyuncu 1 puan kaybetti.`;
-    } 
-    else if (Math.abs(sayi1 - ort) == Math.abs(sayi2 - ort)) {
-        kazanan = `<strong>${ort}</strong> Berabere kalındı.`;
-    } 
-    else {
-        kazanan = `<strong>${ort}</strong> 2. oyuncu kazandı! 1. oyuncu 1 puan kaybetti.`;
+<script>
+    function showGameCard() {
+        document.getElementById("start").style.display = "none";
+        document.getElementById("gamecard").style.display = "flex";
     }
-    
-    document.getElementById("sonuc").innerHTML = kazanan;
-    document.getElementById("result").classList.remove("hidden");
-}
-    </script>
+    function showGame() {
+        document.getElementById("gamecard").style.display = "none";
+        document.getElementById("game").style.display = "flex";
+    }
+    let sayi1, sayi2;
+    function kaydet1() {
+        sayi1 = parseInt(document.getElementById("yarismaci1").value);
+        if (sayi1 < 1 || sayi1 > 100 || isNaN(sayi1)) {
+            alert("Lütfen 1-100 arası bir sayı girin.");
+            return;
+        }
+        document.getElementById("player1").style.display = "none";
+        document.getElementById("player2").style.display = "block";
+    }
+    function kaydet2() {
+        sayi2 = parseInt(document.getElementById("yarismaci2").value);
+        if (sayi2 < 1 || sayi2 > 100 || isNaN(sayi2)) {
+            alert("Lütfen 1-100 arası bir sayı girin.");
+            return;
+        }
+        document.getElementById("player2").style.display = "none";
+        hesapla();
+    }
+    function hesapla() {
+        let ort = (sayi1 + sayi2) * 0.8 * 0.5;
+        ort = Number(ort.toFixed(2));
+        let kazanan;
+        if (Math.abs(sayi1 - ort) < Math.abs(sayi2 - ort)) {
+            kazanan = `<strong>${ort}</strong> 1. oyuncu kazandı! 2. oyuncu 1 puan kaybetti.`;
+        } else if (Math.abs(sayi1 - ort) == Math.abs(sayi2 - ort)) {
+            kazanan = `<strong>${ort}</strong> Berabere kalındı.`;
+        } else {
+            kazanan = `<strong>${ort}</strong> 2. oyuncu kazandı! 1. oyuncu 1 puan kaybetti.`;
+        }
+        document.getElementById("sonuc").innerHTML = kazanan;
+        document.getElementById("result").style.display = "block";
+    }
+    function restartGame() {
+        document.getElementById("result").style.display = "none";
+        document.getElementById("player1").style.display = "block";
+        document.getElementById("player2").style.display = "none";
+        document.getElementById("yarismaci1").value = "";
+        document.getElementById("yarismaci2").value = "";
+    }
+</script>
 </body>
 </html>
